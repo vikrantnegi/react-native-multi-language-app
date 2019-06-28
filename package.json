@@ -7,7 +7,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "i18n": "^0.8.3",
     "i18n-js": "^3.3.0",
     "lodash.memoize": "^4.1.2",
     "react": "16.8.3",

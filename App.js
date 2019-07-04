@@ -6,12 +6,12 @@ import * as RNLocalize from 'react-native-localize';
 import i18n from 'i18n-js';
 import memoize from 'lodash.memoize';
 
-import { I18nManager, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { I18nManager, SafeAreaView, StyleSheet, Text } from 'react-native';
 
 const translationGetters = {
   // lazy requires (metro bundler does not support symlinks)
-  ar: () => require('./src/translations/ar.json'),
   en: () => require('./src/translations/en.json'),
+  ar: () => require('./src/translations/ar.json'),
   fr: () => require('./src/translations/fr.json'),
 };
 
@@ -30,13 +30,12 @@ const setI18nConfig = () => {
   translate.cache.clear();
   // update layout direction
   I18nManager.forceRTL(isRTL);
-
   // set i18n-js config
   i18n.translations = { [languageTag]: translationGetters[languageTag]() };
   i18n.locale = languageTag;
 };
 
-export default class SyncExample extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     setI18nConfig(); // set initial config
@@ -58,54 +57,20 @@ export default class SyncExample extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView contentContainerStyle={styles.container}>
-          <Line name="RNLocalize.getLocales()" value={RNLocalize.getLocales()} />
-          <Line name="RNLocalize.getCurrencies()" value={RNLocalize.getCurrencies()} />
-          <Line name="RNLocalize.getCountry()" value={RNLocalize.getCountry()} />
-          <Line name="RNLocalize.getCalendar()" value={RNLocalize.getCalendar()} />
-          <Line name="RNLocalize.getNumberFormatSettings()" value={RNLocalize.getNumberFormatSettings()} />
-          <Line name="RNLocalize.getTemperatureUnit()" value={RNLocalize.getTemperatureUnit()} />
-          <Line name="RNLocalize.getTimeZone()" value={RNLocalize.getTimeZone()} />
-          <Line name="RNLocalize.uses24HourClock()" value={RNLocalize.uses24HourClock()} />
-          <Line name="RNLocalize.usesMetricSystem()" value={RNLocalize.usesMetricSystem()} />
-          <Line
-            name="RNLocalize.findBestAvailableLanguage(['en-US', 'en', 'fr'])"
-            value={RNLocalize.findBestAvailableLanguage(['en-US', 'en', 'fr'])}
-          />
-
-          <Line name="Translation example" value={translate('hello')} />
-        </ScrollView>
+        <Text style={styles.value}>{translate('hello')}</Text>
       </SafeAreaView>
     );
   }
 }
 
-const Line = props => (
-  <View style={styles.block}>
-    <Text style={styles.name}>{props.name}</Text>
-    <Text style={styles.value}>{JSON.stringify(props.value, null, 2)}</Text>
-  </View>
-);
-
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: 'white',
     flex: 1,
-  },
-  container: {
-    padding: 16,
-    alignItems: 'flex-start',
-  },
-  block: {
-    marginBottom: 16,
-    alignItems: 'flex-start',
-  },
-  name: {
-    textDecorationLine: 'underline',
-    fontWeight: '500',
-    marginBottom: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   value: {
-    textAlign: 'left',
+    fontSize: 18,
   },
 });
